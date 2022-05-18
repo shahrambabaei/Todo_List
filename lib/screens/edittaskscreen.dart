@@ -115,7 +115,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             Navigator.pop(context);
           },
           label: Row(
-            children: [
+            children:const [
               Text('SaveChange'),
               SizedBox(
                 width: 10,
