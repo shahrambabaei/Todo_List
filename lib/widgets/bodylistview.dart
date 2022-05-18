@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:todo_list/data.dart';
+import 'package:todo_list/main.dart';
+import 'package:todo_list/screens/edittaskscreen.dart';
 
 class BodyListView extends StatefulWidget {
   const BodyListView({Key? key, required this.task}) : super(key: key);
@@ -12,9 +13,21 @@ class BodyListView extends StatefulWidget {
 
 class _BodyListViewState extends State<BodyListView> {
   late ThemeData themeData;
+  late Color priorityColor;
   @override
   void didChangeDependencies() {
     themeData = Theme.of(context);
+    switch (widget.task.priority) {
+      case Priority.low:
+        priorityColor = lowPriority;
+        break;
+      case Priority.normal:
+        priorityColor = normalPriority;
+        break;
+      case Priority.high:
+        priorityColor = highPriority;
+        break;
+    }
     super.didChangeDependencies();
   }
 
@@ -23,12 +36,21 @@ class _BodyListViewState extends State<BodyListView> {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: InkWell(
-        enableFeedback: false,
-        onTap: () {},
+        // enableFeedback: false,
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditTaskScreen(task: widget.task),
+              ));
+        },
+        onLongPress: (){
+          widget.task.delete();
+        },
         child: Container(
           height: 70,
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: const EdgeInsets.only(left: 12),
           decoration: BoxDecoration(
             color: themeData.colorScheme.surface,
           ),
@@ -52,7 +74,16 @@ class _BodyListViewState extends State<BodyListView> {
                   decoration: widget.task.isCompeleted
                       ? TextDecoration.lineThrough
                       : null),
-            ))
+            )),
+            Container(
+              width: 7,
+              height: 70,
+              decoration: BoxDecoration(
+                  color: priorityColor,
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(5),
+                      bottomRight: Radius.circular(5))),
+            )
           ]),
         ),
       ),

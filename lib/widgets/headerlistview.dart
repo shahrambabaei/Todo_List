@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_list/data.dart';
 import 'package:todo_list/main.dart';
 
 class HeaderListView extends StatelessWidget {
@@ -8,6 +10,7 @@ class HeaderListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final box = Hive.box<Task>(taskBoxName);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -32,7 +35,9 @@ class HeaderListView extends StatelessWidget {
           color: const Color(0xFfEAEFF5),
           textColor: secondaryTextColor,
           elevation: 0,
-          onPressed: () {},
+          onPressed: () {
+            box.clear();
+          },
           child: Row(children: const [
             Text('Delete All'),
             SizedBox(

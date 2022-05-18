@@ -19,7 +19,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   late ThemeData themeData;
   @override
   void initState() {
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.task.text);
     super.initState();
   }
 
@@ -103,19 +103,18 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Task task = Task();
-            task.text = _controller.text;
-            task.isCompeleted = false;
-            task.priority = Priority.low;
-            if (task.isInBox) {
-              task.save();
+            widget.task.text = _controller.text;
+            widget.task.isCompeleted = false;
+            widget.task.priority = widget.task.priority;
+            if (widget.task.isInBox) {
+             widget. task.save();
             } else {
-              box.add(task);
+              box.add( widget.task);
             }
             Navigator.pop(context);
           },
           label: Row(
-            children:const [
+            children: const [
               Text('SaveChange'),
               SizedBox(
                 width: 10,
