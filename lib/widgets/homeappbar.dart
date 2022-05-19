@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/main.dart';
 
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double width, height;
-  const HomeAppBar({Key? key, required this.width, required this.height})
-      : super(key: key);
+class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const HomeAppBar({Key? key}) : super(key: key);
+
+  @override
+  State<HomeAppBar> createState() => _HomeAppBarState();
+
+  @override
+  Size get preferredSize => const Size(double.infinity, 100);
+}
+
+class _HomeAppBarState extends State<HomeAppBar> {
+  late ThemeData themeData;
+  late TextEditingController _controller;
+  static final ValueNotifier<String> searchValueNotifier = ValueNotifier('');
+  @override
+  void didChangeDependencies() {
+    themeData = Theme.of(context);
+    _controller = TextEditingController();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     return Container(
       height: 102,
       padding: const EdgeInsets.fromLTRB(16, 10, 16, 5),
@@ -34,6 +49,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           height: 40,
           margin: const EdgeInsets.only(top: 15),
           child: TextField(
+            controller: _controller,
+            onChanged: (value) {
+              searchValueNotifier.value = _controller.text;
+            },
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(0),
                 prefixIcon: const Icon(Icons.search, color: secondaryTextColor),
@@ -49,7 +68,4 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       ]),
     );
   }
-
-  @override
-  Size get preferredSize => Size(width, height);
 }
